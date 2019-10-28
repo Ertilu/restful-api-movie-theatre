@@ -28,7 +28,7 @@ exports.validateUser = function (req, res, next) {
 
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/movietheatre', 
+mongoose.connect('mongodb+srv://raka9:rakasukses123@cluster0-fwxzc.mongodb.net/test?retryWrites=true&w=majority', 
   { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }, 
   () => {
     console.log('DB Connected!')
