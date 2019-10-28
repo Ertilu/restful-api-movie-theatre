@@ -4,7 +4,7 @@
   "description": "This API is to book ticket in movie theatre",
   "main": "app.js",
   "scripts": {
-    "test": "loclhost:8888"
+    "start": "node app.js"
   },
   "keywords": [
     "API"

@@ -30,6 +30,14 @@ let TicketSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Hall',
     required: true
+  },
+  person: {
+    type: Number,
+    required: true
+  },
+  price: {
+    type: Number,
+    required: true
   }
 });
 

@@ -1,7 +1,8 @@
 'use strict';
 
 let mongoose = require('mongoose'),
-Ticket = mongoose.model('Ticket');
+Ticket = mongoose.model('Ticket'),
+Seat = mongoose.model('Seat');
 
 exports.getTicket = function(req, res) {
   Ticket.find({}, function(err, data) {
@@ -21,11 +22,15 @@ exports.getTicket = function(req, res) {
 };
 
 exports.createTicket = function(req, res) {
-  let newTicket = new Ticket(req.body);
-  newTicket.save(function(err, data) {
+  Seat.findOneAndUpdate({_id: req.body.seat_id}, { 'status': 'filled' }, function(err, data) {
     if (err)
       res.send(err);
-    res.json(data);
+      let newTicket = new Ticket(req.body);
+      newTicket.save(function(err, data) {
+        if (err)
+          res.send(err);
+        res.json(data);
+      });
   });
 };
 
@@ -60,6 +65,6 @@ exports.deleteTicket = function(req, res) {
   }, function(err, data) {
     if (err)
       res.send(err);
-    res.json({ message: data.name +' Data successfully deleted' });
+    res.json({ message: 'Data successfully deleted' });
   });
 };

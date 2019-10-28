@@ -10,6 +10,7 @@ User = require('./api/routes/UserRoute'), //created model loading here
 logger = require('morgan'),
 cors = require('cors'),
 jwt = require('jsonwebtoken'),
+env = require('dotenv').config();
 bodyParser = require('body-parser');
 
 app.set('secretKey', 'nodeRestApi'); // jwt secret token
@@ -28,9 +29,9 @@ exports.validateUser = function (req, res, next) {
 
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb+srv://raka9:rakasukses123@cluster0-fwxzc.mongodb.net/test?retryWrites=true&w=majority', 
+mongoose.connect(process.env.DATABASE_URI, 
   { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }, 
-  () => {
+  (req, res) => {
     console.log('DB Connected!')
   }
 ); 
