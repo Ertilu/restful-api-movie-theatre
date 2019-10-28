@@ -5,7 +5,7 @@ module.exports = function(app) {
 
   // Movie Routes
   app.route('/movie')
-    .get(auth.validateUser, Movie.getMovies)
+    .get(Movie.getMovies)
     .post(Movie.createMovie);
 
 
