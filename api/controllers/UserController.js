@@ -13,18 +13,47 @@ module.exports = {
     });
  },
 authenticate: function(req, res, next) {
-  userModel.findOne({email:req.body.email}, function(err, userInfo){
-     if (err) {
-      next(err);
-     } else {
-        if(bcrypt.compareSync(req.body.password, userInfo.password)) {
-            const token = jwt.sign({id: userInfo._id}, req.app.get('secretKey'));
-            res.json({status:"success", message: "user found!!!", data:{user: userInfo, token:token}});
-        }else{
-            res.json({status:"error", message: "Invalid email/password!!!", data:null});
-        }
-     }
-    });
+  userModel.findOne({email: req.body.email})
+		.then(data => {
+			if (data) {
+				bcrypt.compare(req.body.password, data.password, function(err, result) {
+					if (result === true) {
+						const token = jwt.sign({email: data.email}, 'secretkey');
+						res.json({
+							status: 200,
+							error: false,
+							user: {
+								_id: data._id,
+								name: data.name,
+								email: data.email
+							},
+							token
+						})
+					} else {
+						console.log(data.password)
+						console.log(req.body.password)
+						res.status(400).json({
+							status: 400,
+							error: true,
+							message: 'Email or Password is wrong'
+						})
+					}
+				})
+			} else {
+				res.status(400).json({
+					status: 400,
+					error: true,
+					message: 'Email or Password is wrong'
+				})
+			}
+		})
+		.catch(err => {
+			res.status(400).json({
+				status: 400,
+				error: true,
+				message: err.message
+			})
+		})
  },
  getUser: function(req, res, next) {
    userModel.find({}, function(err, data) {
